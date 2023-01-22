@@ -76,9 +76,59 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
+// Login User
+const loginUser = asyncHandler(async (req, res) => {
+    const { username, password } = req.body;
+  
+    // Validate Request
+    if (!username || !password) {
+      res.status(400);
+      throw new Error("Please add username and password");
+    }
+  
+    // Check if user exists
+    const user = await User.findOne({ username });
+  
+    if (!user) {
+      res.status(400);
+      throw new Error("User not found, please signup");
+    }
+  
+    // User exists, check if password is correct
+    const passwordIsCorrect = await bcrypt.compare(password, user.password);
+  
+    //   Generate Token
+    const token = generateToken(user._id);
+  
+    // Send HTTP-only cookie
+    res.cookie("token", token, {
+      path: "/",
+      httpOnly: true,
+      expires: new Date(Date.now() + 1000 * 86400), // 1 day
+      sameSite: "none",
+      secure: true,
+    });
+  
+    if (user && passwordIsCorrect) {
+      const { _id, username, email, isAvatarImageSet, avatarImage } = user;
+      res.status(200).json({
+        _id,
+        username,
+        email,
+        isAvatarImageSet,
+        avatarImage,
+        token,
+      
+      });
+    } else {
+      res.status(400);
+      throw new Error("Invalid email or password");
+    }
+  });
+
 module.exports = {
     registerUser,
-    // loginUser,
+    loginUser,
     // logoutUser,
     // getUser,
     // loginStatus,
