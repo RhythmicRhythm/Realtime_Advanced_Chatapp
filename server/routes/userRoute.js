@@ -1,14 +1,14 @@
 const express = require("express");
 const {
   registerUser,
-//   loginUser,
-//   logoutUser,
-//   getUser,
-//   loginStatus,
-//   updateUser,
-//   changePassword,
-//   forgotPassword,
-//   resetPassword,
+  //   loginUser,
+  //   logoutUser,
+  //   getUser,
+  //   loginStatus,
+  //   updateUser,
+  //   changePassword,
+  //   forgotPassword,
+  //   resetPassword,
 } = require("../controllers/userController");
 const router = express.Router();
 // const protect = require("../middleWare/authMiddleware");
