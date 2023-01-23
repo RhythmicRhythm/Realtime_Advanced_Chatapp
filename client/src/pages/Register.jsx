@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import styled from "styled-components";
 import "react-toastify/dist/ReactToastify.css";
+import { registerRoute } from "../utils/apiRoutes";
 
 export default function Register() {
 
@@ -22,6 +24,12 @@ export default function Register() {
         confirmPassword: "",
       });
 
+      useEffect(() => {
+        if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+          navigate("/");
+        }
+      }, []);
+
       const handleChange = (event) => {
         setValues({ ...values, [event.target.name]: event.target.value });
       };
@@ -40,7 +48,7 @@ export default function Register() {
             toastOptions
           );
           return false;
-        } else if (password.length < 8) {
+        } else if (password.length < 6) {
           toast.error(
             "Password should be equal or greater than 8 characters.",
             toastOptions
@@ -53,13 +61,28 @@ export default function Register() {
     
         return true;
       };
+      const handleSubmit = async (event) => {
+        event.preventDefault();
+        if (handleValidation()) {
+          const { email, username, password } = values;
+          const { data } = await axios.post(registerRoute, {
+            username,
+            email,
+            password,
+          });
     
-
-      const handleSubmit = (e) => {
-        e.preventDefault();
-        handleValidation()
-        console.log("hello");
-      }
+          if (data.status === false) {
+            toast.error(data.msg, toastOptions);
+          }
+          if (data.status === true) {
+            localStorage.setItem(
+              process.env.REACT_APP_LOCALHOST_KEY,
+              JSON.stringify(data.user)
+            );
+            navigate("/");
+          }
+        }
+      };
 
     return (
         <>
