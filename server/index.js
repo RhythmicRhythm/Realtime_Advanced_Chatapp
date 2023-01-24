@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const app = express();
 require("dotenv").config();
 const userRoute = require("./routes/userRoute");
+const errorHandler = require("./middleWare/errorMiddleware");
 
 // Middlewares
 app.use(express.json());
@@ -23,6 +24,9 @@ app.use("/api/users", userRoute);
 app.get("/", (req, res) => {
   res.send("Home Page");
 });
+
+//Error Middleware
+app.use(errorHandler);  
 
 // Connect to DB and start server
 const PORT = process.env.PORT || 5000;
