@@ -78,6 +78,10 @@ export default function Register() {
           try {
             const data = await registerUser(userData);
             console.log(data);
+            localStorage.setItem(
+              process.env.REACT_APP_LOCALHOST_KEY,
+              JSON.stringify(data)
+            );
            
             // setIsLoading(false);
           } catch (error) {
