@@ -4,7 +4,8 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import styled from "styled-components";
 import "react-toastify/dist/ReactToastify.css";
-import { registerRoute } from "../utils/apiRoutes";
+// import { registerRoute } from "../utils/apiRoutes";
+import { registerUser, validateEmail } from "../services/authService";
 
 export default function Register() {
 
@@ -36,6 +37,7 @@ export default function Register() {
         
       const handleValidation = () => {
         const { password, confirmPassword, username, email } = values;
+
         if (password !== confirmPassword) {
           toast.error(
             "Password and confirm password should be same.",
@@ -63,24 +65,27 @@ export default function Register() {
       };
       const handleSubmit = async (event) => {
         event.preventDefault();
+
         if (handleValidation()) {
+
           const { email, username, password } = values;
-          const { data } = await axios.post(registerRoute, {
+          const userData = {
             username,
             email,
             password,
-          });
+          };
+          
+          try {
+            const data = await registerUser(userData);
+            console.log(data);
+           
+            // setIsLoading(false);
+          } catch (error) {
+            // setIsLoading(false);
+            console.log(error);
+          }
     
-          if (data.status === false) {
-            toast.error(data.msg, toastOptions);
-          }
-          if (data.status === true) {
-            localStorage.setItem(
-              process.env.REACT_APP_LOCALHOST_KEY,
-              JSON.stringify(data.user)
-            );
-            navigate("/");
-          }
+        
         }
       };
 

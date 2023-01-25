@@ -5,6 +5,7 @@ const errorHandler = (err, req, res, next) => {
   
     res.json({
       message: err.message,
+      status: false,
       stack: process.env.NODE_ENV === "development" ? err.stack : null,
     });
   };
