@@ -12,10 +12,11 @@ export const registerUser = async (userData) => {
         userData,
         { withCredentials: true }
       );
-      if (response.statusText === "OK") {
+    //   if (response.statusText === "OK") {
+    // }
         toast.success("User Registered successfully");
+        console.log("registered");
     
-      }
       return response.data;
     } catch (error) {
       const message =

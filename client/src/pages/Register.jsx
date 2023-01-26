@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import styled from "styled-components";
 import "react-toastify/dist/ReactToastify.css";
-// import { registerRoute } from "../utils/apiRoutes";
 import { registerUser, validateEmail } from "../services/authService";
 
 export default function Register() {
@@ -25,11 +23,11 @@ export default function Register() {
         confirmPassword: "",
       });
 
-      useEffect(() => {
-        if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
-          navigate("/");
-        }
-      }, []);
+      // useEffect(() => {
+      //   if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+      //     navigate("/");
+      //   }
+      // }, []);
 
       const handleChange = (event) => {
         setValues({ ...values, [event.target.name]: event.target.value });
@@ -78,14 +76,16 @@ export default function Register() {
           try {
             const data = await registerUser(userData);
             console.log(data);
+            // toast.success("User Registered successfully");
             localStorage.setItem(
               process.env.REACT_APP_LOCALHOST_KEY,
               JSON.stringify(data)
             );
+            // navigate("/"); 
            
             // setIsLoading(false);
           } catch (error) {
-            // setIsLoading(false);
+          
             console.log(error);
           }
     
