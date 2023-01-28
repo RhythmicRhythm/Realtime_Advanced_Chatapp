@@ -14,7 +14,7 @@ function SetAvatar() {
     const api = `https://api.multiavatar.com/4645646`;
     const navigate = useNavigate();
     const [avatars, setAvatars] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [selectedAvatar, setSelectedAvatar] = useState(undefined);
 
     const toastOptions = {
@@ -27,6 +27,21 @@ function SetAvatar() {
 
     const setProfilePicture = async () => {
         console.log("hello");
+        if (selectedAvatar === undefined) {
+            toast.error("Please select an avatar", toastOptions);
+          } else {
+            const user = await JSON.parse(
+                localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
+              );
+
+              // const { data } = await axios.post(`${setAvatarRoute}/${user._id}`, {
+              //   image: avatars[selectedAvatar],
+              // });   
+            
+              
+
+          }
+
     }
 
     useEffect(() => {
@@ -37,6 +52,7 @@ function SetAvatar() {
               const image = await axios.get(
                 `${api}/${Math.round(Math.random() * 1000)}`
               );
+
               const buffer = new Buffer(image.data);
               data.push(buffer.toString("base64"));
             }

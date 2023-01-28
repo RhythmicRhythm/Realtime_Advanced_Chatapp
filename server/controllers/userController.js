@@ -5,11 +5,10 @@ const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 // const Token = require("../models/tokenModel");
 
-
 // Generate Token
 const generateToken = (id) => {
-    return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "1d" });
-  };
+  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "1d" });
+};
 
 // REGISTER USER
 const registerUser = asyncHandler(async (req, res) => {
@@ -78,62 +77,66 @@ const registerUser = asyncHandler(async (req, res) => {
 
 // Login User
 const loginUser = asyncHandler(async (req, res) => {
-    const { username, password } = req.body;
-  
-    // Validate Request
-    if (!username || !password) {
-      res.status(400);
-      throw new Error("Please add username and password");
-    }
-  
-    // Check if user exists
-    const user = await User.findOne({ username });
-  
-    if (!user) {
-      res.status(400);
-      throw new Error("User not found, please signup");
-    }
-  
-    // User exists, check if password is correct
-    const passwordIsCorrect = await bcrypt.compare(password, user.password);
-  
-    //   Generate Token
-    const token = generateToken(user._id);
-  
-    // Send HTTP-only cookie
-    res.cookie("token", token, {
-      path: "/",
-      httpOnly: true,
-      expires: new Date(Date.now() + 1000 * 86400), // 1 day
-      sameSite: "none",
-      secure: true,
-    });
-  
-    if (user && passwordIsCorrect) {
-      const { _id, username, email, isAvatarImageSet, avatarImage } = user;
-      res.status(200).json({
-        _id,
-        username,
-        email,
-        isAvatarImageSet,
-        avatarImage,
-        token,
-      
-      });
-    } else {
-      res.status(400);
-      throw new Error("Invalid email or password");
-    }
+  const { username, password } = req.body;
+
+  // Validate Request
+  if (!username || !password) {
+    res.status(400);
+    throw new Error("Please add username and password");
+  }
+
+  // Check if user exists
+  const user = await User.findOne({ username });
+
+  if (!user) {
+    res.status(400);
+    throw new Error("User not found, please signup");
+  }
+
+  // User exists, check if password is correct
+  const passwordIsCorrect = await bcrypt.compare(password, user.password);
+
+  //   Generate Token
+  const token = generateToken(user._id);
+
+  // Send HTTP-only cookie
+  res.cookie("token", token, {
+    path: "/",
+    httpOnly: true,
+    expires: new Date(Date.now() + 1000 * 86400), // 1 day
+    sameSite: "none",
+    secure: true,
   });
 
+  if (user && passwordIsCorrect) {
+    const { _id, username, email, isAvatarImageSet, avatarImage } = user;
+    res.status(200).json({
+      _id,
+      username,
+      email,
+      isAvatarImageSet,
+      avatarImage,
+      token,
+    });
+  } else {
+    res.status(400);
+    throw new Error("Invalid email or password");
+  }
+});
+
+// Set Image
+const setavatar = asyncHandler(async (req, res) => {
+  
+});
+
 module.exports = {
-    registerUser,
-    loginUser,
-    // logoutUser,
-    // getUser,
-    // loginStatus,
-    // updateUser,
-    // changePassword,
-    // forgotPassword, 
-    // resetPassword
-}; 
+  registerUser,
+  loginUser,
+  // logoutUser,
+  // getUser,
+  // loginStatus,
+  // updateUser,
+  // changePassword,
+  // forgotPassword,
+  // resetPassword
+};
