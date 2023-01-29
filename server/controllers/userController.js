@@ -125,13 +125,31 @@ const loginUser = asyncHandler(async (req, res) => {
 });
 
 // Set Image
-const setavatar = asyncHandler(async (req, res) => {
-  
+const setAvatar = asyncHandler(async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const avatarImage = req.body.image;
+    const userData = await User.findByIdAndUpdate(
+      userId,
+      {
+        isAvatarImageSet: true,
+        avatarImage,
+      },
+      { new: true }
+    );
+    return res.json({
+      isSet: userData.isAvatarImageSet,
+      image: userData.avatarImage,
+    });
+  } catch (ex) {
+    next(ex);
+  }
 });
 
 module.exports = {
   registerUser,
   loginUser,
+  setAvatar
   // logoutUser,
   // getUser,
   // loginStatus,

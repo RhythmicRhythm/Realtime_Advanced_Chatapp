@@ -2,6 +2,7 @@ const express = require("express");
 const {
   registerUser,
     loginUser,
+    setAvatar,
   //   logoutUser,
   //   getUser,
   //   loginStatus,
@@ -15,6 +16,7 @@ const router = express.Router();
 
 router.post("/register", registerUser);
 router.post("/login", loginUser);
+router.post("/setavatar/:id", setAvatar);
 // router.get("/logout", logoutUser);
 // router.get("/getuser", protect, getUser);
 // router.get("/loggedin", loginStatus);

@@ -12,7 +12,7 @@ export default function Register() {
       position: "bottom-right",
       autoClose: 8000,
       pauseOnHover: true,
-      draggable: true,
+      draggable: true, 
       theme: "dark",
     };
 
