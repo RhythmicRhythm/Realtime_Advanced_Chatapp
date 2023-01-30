@@ -3,7 +3,7 @@ const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
-// const Token = require("../models/tokenModel");
+const Token = require("../models/tokenModel");
 
 // Generate Token
 const generateToken = (id) => {
@@ -124,6 +124,40 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 });
 
+  // Get Login Status
+  const loginStatus = asyncHandler(async (req, res) => {
+    const token = req.cookies.token;
+    if (!token) {
+      return res.json(false);
+    }
+    // Verify Token
+    const verified = jwt.verify(token, process.env.JWT_SECRET);
+    if (verified) {
+      return res.json(true);
+    }
+    return res.json(false);
+  });
+
+  
+// Get User Data
+const getUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+
+  if (user) {
+    const { _id, username, email, isAvatarImageSet, avatarImage } = user;
+    res.status(200).json({
+      _id,
+      username,
+      email,
+      isAvatarImageSet,
+      avatarImage,
+    });
+  } else {
+    res.status(400);
+    throw new Error("User Not Found");
+  }
+});
+
 // Set Image
 const setAvatar = asyncHandler(async (req, res) => {
   try {
@@ -149,10 +183,10 @@ const setAvatar = asyncHandler(async (req, res) => {
 module.exports = {
   registerUser,
   loginUser,
-  setAvatar
+  setAvatar,
   // logoutUser,
-  // getUser,
-  // loginStatus,
+  getUser,
+  loginStatus,
   // updateUser,
   // changePassword,
   // forgotPassword,
