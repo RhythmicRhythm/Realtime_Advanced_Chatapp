@@ -175,21 +175,19 @@ const getUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
 
   if (user) {
-    const { name, email, photo, phone, bio } = user;
+    const { username, email, isAvatarImageSet, avatarImage } = user;
     user.email = email;
-    user.name = req.body.name || name;
-    user.phone = req.body.phone || phone;
-    user.bio = req.body.bio || bio;
-    user.photo = req.body.photo || photo;
+    user.username = req.body.username || username;
+    user.isAvatarImageSet = req.body.isAvatarImageSet || isAvatarImageSet;
+    user.avatarImage = req.body.avatarImage || avatarImage;
 
     const updatedUser = await user.save();
     res.status(200).json({
       _id: updatedUser._id,
-      name: updatedUser.name,
+      username: updatedUser.username,
       email: updatedUser.email,
-      photo: updatedUser.photo,
-      phone: updatedUser.phone,
-      bio: updatedUser.bio,
+      isAvatarImageSet: updatedUser.isAvatarImageSet,
+      avatarImage: updatedUser.avatarImage,
     });
   } else {
     res.status(404);
