@@ -260,6 +260,7 @@ module.exports = {
   setAvatar,
   logoutUser,
   getUser,
+  getUsers,
   loginStatus,
   updateUser,
   changePassword,

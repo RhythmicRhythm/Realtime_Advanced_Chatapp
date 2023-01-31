@@ -5,6 +5,7 @@ const {
     setAvatar,
     logoutUser,
       getUser,
+      getUsers,
     loginStatus,
     updateUser,
     changePassword,
@@ -18,6 +19,7 @@ router.post("/register", registerUser);
 router.post("/login", loginUser);
 router.post("/setavatar/:id", setAvatar);
 router.get("/logout", logoutUser);
+router.get("/getusers", protect, getUsers);
 router.get("/getuser", protect, getUser);
 router.get("/loggedin", loginStatus);
 router.patch("/updateuser", protect, updateUser);
