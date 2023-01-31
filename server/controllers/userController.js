@@ -150,6 +150,13 @@ const loginStatus = asyncHandler(async (req, res) => {
     return res.status(200).json({ message: "Successfully Logged Out" });
   });
 
+
+  // Get all User Data
+const getUsers = asyncHandler(async (req, res) => {
+  const users = await User.find({ user: req.user.id }).sort("-createdAt");
+  res.status(200).json(users);
+});
+
 // Get User Data
 const getUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
