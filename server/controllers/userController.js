@@ -124,21 +124,33 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 });
 
-  // Get Login Status
-  const loginStatus = asyncHandler(async (req, res) => {
-    const token = req.cookies.token;
-    if (!token) {
-      return res.json(false);
-    }
-    // Verify Token
-    const verified = jwt.verify(token, process.env.JWT_SECRET);
-    if (verified) {
-      return res.json(true);
-    }
+// Get Login Status
+const loginStatus = asyncHandler(async (req, res) => {
+  const token = req.cookies.token;
+  if (!token) {
     return res.json(false);
+  }
+  // Verify Token
+  const verified = jwt.verify(token, process.env.JWT_SECRET);
+  if (verified) {
+    return res.json(true);
+  }
+  return res.json(false);
+});
+
+  // Logout User
+  const logoutUser = asyncHandler(async (req, res) => {
+    res.cookie("token", "", {
+      path: "/",
+      httpOnly: true,
+      expires: new Date(0),
+      sameSite: "none",
+      secure: true,
+    });
+    return res.status(200).json({ message: "Successfully Logged Out" });
   });
 
-  
+
 // Get User Data
 const getUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
@@ -159,7 +171,7 @@ const getUser = asyncHandler(async (req, res) => {
 });
 
 // Set Image
-const setAvatar = asyncHandler(async (req, res) => {
+const setAvatar = asyncHandler(async (req, res, next) => {
   try {
     const userId = req.params.id;
     const avatarImage = req.body.image;
@@ -184,7 +196,7 @@ module.exports = {
   registerUser,
   loginUser,
   setAvatar,
-  // logoutUser,
+  logoutUser,
   getUser,
   loginStatus,
   // updateUser,
