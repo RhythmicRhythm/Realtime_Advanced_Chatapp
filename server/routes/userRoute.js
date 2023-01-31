@@ -3,7 +3,7 @@ const {
   registerUser,
     loginUser,
     setAvatar,
-  //   logoutUser,
+    logoutUser,
       getUser,
     loginStatus,
   //   updateUser,
@@ -17,7 +17,7 @@ const protect = require("../middleWare/authMiddleware");
 router.post("/register", registerUser);
 router.post("/login", loginUser);
 router.post("/setavatar/:id", setAvatar);
-// router.get("/logout", logoutUser);
+router.get("/logout", logoutUser);
 router.get("/getuser", protect, getUser);
 router.get("/loggedin", loginStatus);
 // router.patch("/updateuser", protect, updateUser);
