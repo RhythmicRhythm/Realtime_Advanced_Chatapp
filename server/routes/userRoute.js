@@ -7,7 +7,7 @@ const {
       getUser,
     loginStatus,
     updateUser,
-  //   changePassword,
+    changePassword,
   //   forgotPassword,
   //   resetPassword,
 } = require("../controllers/userController");
@@ -21,7 +21,7 @@ router.get("/logout", logoutUser);
 router.get("/getuser", protect, getUser);
 router.get("/loggedin", loginStatus);
 router.patch("/updateuser", protect, updateUser);
-// router.patch("/changepassword", protect, changePassword);
+router.patch("/changepassword", protect, changePassword);
 // router.post("/forgotpassword", forgotPassword);
 // router.put("/resetpassword/:resetToken", resetPassword);
 
