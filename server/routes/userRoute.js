@@ -6,7 +6,7 @@ const {
     logoutUser,
       getUser,
     loginStatus,
-  //   updateUser,
+    updateUser,
   //   changePassword,
   //   forgotPassword,
   //   resetPassword,
@@ -20,7 +20,7 @@ router.post("/setavatar/:id", setAvatar);
 router.get("/logout", logoutUser);
 router.get("/getuser", protect, getUser);
 router.get("/loggedin", loginStatus);
-// router.patch("/updateuser", protect, updateUser);
+router.patch("/updateuser", protect, updateUser);
 // router.patch("/changepassword", protect, changePassword);
 // router.post("/forgotpassword", forgotPassword);
 // router.put("/resetpassword/:resetToken", resetPassword);
